@@ -25,6 +25,10 @@ resource "azurerm_virtual_machine" "vmone" {
   }
   os_profile_linux_config {
     disable_password_authentication = false
+    ssh_keys {
+      path     = "/home/c9admin/.ssh/authorized_keys"
+      key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+    }
   }
 
 }
@@ -103,6 +107,10 @@ resource "azurerm_virtual_machine" "vmtwo" {
   }
   os_profile_linux_config {
     disable_password_authentication = false
+    ssh_keys {
+      path     = "/home/c9admin/.ssh/authorized_keys"
+      key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+    }
   }
 
 }
