@@ -1,0 +1,62 @@
+{% for vm in vmlist %}
+  resource "azurerm_virtual_machine" "{{ vm.name }}" {
+    name                  = "{{ vm.name }}"
+    location              = "${azurerm_resource_group.{{ vm.resource_group_name }}.location}"
+    resource_group_name   = "${azurerm_resource_group.{{ vm.resource_group_name }}.name}"
+    network_interface_ids = ["${azurerm_network_interface.{{ vm.name }}-nic1.id}"]
+    vm_size               = "{{ vm.vm_size }}"
+  
+  storage_image_reference {
+    {{ global.ubuntu1604 }}
+  }
+  storage_os_disk {
+    name              = "{{ vm.name }}-osdisk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "{{ vm.os_disk_managed_disk_type | default('StandardSSD_LRS') }}"
+  }
+  os_profile {
+    computer_name  = "{{ vm.name }}"
+    admin_username = "{{ vm.admin_username | default('c9admin') }}"
+    admin_password = "{{ vm.admin_password | default('C9superC0mpl3x') }}"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+    ssh_keys {
+      path     = "/home/{{ vm.admin_username | default('c9admin') }}/.ssh/authorized_keys"
+      key_data = "{{ global.c9admin_ssh_key }}"
+    }
+  }
+
+}
+
+resource "azurerm_network_interface" "{{ vm.name }}-nic1" {
+  name                = "{{ vm.name }}-nic1"
+  location            = "${azurerm_resource_group.{{ vm.resource_group_name }}.location}"
+  resource_group_name = "${azurerm_resource_group.{{ vm.resource_group_name }}.name}"
+
+  ip_configuration {
+    name                          = "{{ vm.name }}ipcfg1"
+    subnet_id                     = "${azurerm_subnet.{{ global.mgmt_env_name }}sbnt.id}"
+    private_ip_address_allocation = "dynamic"
+  }
+}
+
+{% for disk in vm.data_disks %}
+resource "azurerm_managed_disk" "{{ vm.name }}-disk{{loop.index}}" {
+  name                 = "{{ vm.name }}-disk{{loop.index}}"
+  location             = "${azurerm_resource_group.{{ vm.resource_group_name }}.location}"
+  resource_group_name  = "${azurerm_resource_group.{{ vm.resource_group_name }}.name}"
+  storage_account_type = "{{ disk.storage_account_type | default('StandardSSD_LRS') }}"
+  create_option        = "Empty"
+  disk_size_gb         = {{ disk.size }}
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "{{ vm.name }}-disk{{loop.index}}" {
+  managed_disk_id    = "${azurerm_managed_disk.{{ vm.name }}-disk{{loop.index}}.id}"
+  virtual_machine_id = "${azurerm_virtual_machine.{{ vm.name }}.id}"
+  lun                = "{{ loop.index }}"
+  caching            = "ReadWrite"
+}
+{% endfor %}
+{% endfor %}

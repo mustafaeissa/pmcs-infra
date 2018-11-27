@@ -1,9 +1,9 @@
-resource "azurerm_virtual_machine" "vmone" {
-  name                  = "vmone"
-  location              = "${azurerm_resource_group.rgone.location}"
-  resource_group_name   = "${azurerm_resource_group.rgone.name}"
-  network_interface_ids = ["${azurerm_network_interface.vmone-nic1.id}"]
-  vm_size               = "Standard_DS1_v2"
+  resource "azurerm_virtual_machine" "vmone" {
+    name                  = "vmone"
+    location              = "${azurerm_resource_group.rgmgmt.location}"
+    resource_group_name   = "${azurerm_resource_group.rgmgmt.name}"
+    network_interface_ids = ["${azurerm_network_interface.vmone-nic1.id}"]
+    vm_size               = "Standard_DS1_v2"
   
   storage_image_reference {
     publisher = "Canonical"
@@ -35,21 +35,20 @@ resource "azurerm_virtual_machine" "vmone" {
 
 resource "azurerm_network_interface" "vmone-nic1" {
   name                = "vmone-nic1"
-  location            = "${azurerm_resource_group.rgone.location}"
-  resource_group_name = "${azurerm_resource_group.rgone.name}"
+  location            = "${azurerm_resource_group.rgmgmt.location}"
+  resource_group_name = "${azurerm_resource_group.rgmgmt.name}"
 
   ip_configuration {
     name                          = "vmoneipcfg1"
-    subnet_id                     = "${azurerm_subnet.mgmt.id}"
+    subnet_id                     = "${azurerm_subnet.mgmtsbnt.id}"
     private_ip_address_allocation = "dynamic"
   }
 }
 
-
 resource "azurerm_managed_disk" "vmone-disk1" {
   name                 = "vmone-disk1"
-  location             = "${azurerm_resource_group.rgone.location}"
-  resource_group_name  = "${azurerm_resource_group.rgone.name}"
+  location             = "${azurerm_resource_group.rgmgmt.location}"
+  resource_group_name  = "${azurerm_resource_group.rgmgmt.name}"
   storage_account_type = "Standard_LRS"
   create_option        = "Empty"
   disk_size_gb         = 10
@@ -61,12 +60,10 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vmone-disk1" {
   lun                = "1"
   caching            = "ReadWrite"
 }
-
-
 resource "azurerm_managed_disk" "vmone-disk2" {
   name                 = "vmone-disk2"
-  location             = "${azurerm_resource_group.rgone.location}"
-  resource_group_name  = "${azurerm_resource_group.rgone.name}"
+  location             = "${azurerm_resource_group.rgmgmt.location}"
+  resource_group_name  = "${azurerm_resource_group.rgmgmt.name}"
   storage_account_type = "StandardSSD_LRS"
   create_option        = "Empty"
   disk_size_gb         = 20
@@ -78,14 +75,12 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vmone-disk2" {
   lun                = "2"
   caching            = "ReadWrite"
 }
-
-
-resource "azurerm_virtual_machine" "vmtwo" {
-  name                  = "vmtwo"
-  location              = "${azurerm_resource_group.rgtwo.location}"
-  resource_group_name   = "${azurerm_resource_group.rgtwo.name}"
-  network_interface_ids = ["${azurerm_network_interface.vmtwo-nic1.id}"]
-  vm_size               = "Standard_DS1_v2"
+  resource "azurerm_virtual_machine" "vmtwo" {
+    name                  = "vmtwo"
+    location              = "${azurerm_resource_group.rgtwo.location}"
+    resource_group_name   = "${azurerm_resource_group.rgtwo.name}"
+    network_interface_ids = ["${azurerm_network_interface.vmtwo-nic1.id}"]
+    vm_size               = "Standard_DS1_v2"
   
   storage_image_reference {
     publisher = "Canonical"
@@ -122,11 +117,10 @@ resource "azurerm_network_interface" "vmtwo-nic1" {
 
   ip_configuration {
     name                          = "vmtwoipcfg1"
-    subnet_id                     = "${azurerm_subnet.mgmt.id}"
+    subnet_id                     = "${azurerm_subnet.mgmtsbnt.id}"
     private_ip_address_allocation = "dynamic"
   }
 }
-
 
 resource "azurerm_managed_disk" "vmtwo-disk1" {
   name                 = "vmtwo-disk1"
@@ -143,5 +137,3 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vmtwo-disk1" {
   lun                = "1"
   caching            = "ReadWrite"
 }
-
-

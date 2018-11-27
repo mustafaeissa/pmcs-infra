@@ -1,14 +1,25 @@
-snippets:
+# Global params
+global:
   ubuntu1604: |
     publisher = "Canonical"
         offer     = "UbuntuServer"
         sku       = "16.04-LTS"
         version   = "latest"
   c9admin_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+  location: "northeurope"
+  vnet_address_space: "10.0.0.0/16"
+  mgmt_env_name: mgmt
+
+# Assumes every env, gets one RG, one subnet and one NSG
+environments:
+  - name: mgmt
+    subnet_address_prefix: "10.0.1.0/24"
+  - name: two
+    subnet_address_prefix: "10.0.2.0/24"
 
 vmlist:
   - name: vmone
-    resource_group_name: rgone
+    resource_group_name: rgmgmt
     vm_size               : "Standard_DS1_v2"
     os_disk_managed_disk_type: "StandardSSD_LRS"
     data_disks:
