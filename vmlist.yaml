@@ -1,0 +1,24 @@
+snippets:
+  ubuntu1604: |
+    publisher = "Canonical"
+        offer     = "UbuntuServer"
+        sku       = "16.04-LTS"
+        version   = "latest"
+  c9admin_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
+
+vmlist:
+  - name: vmone
+    resource_group_name: rgone
+    vm_size               : "Standard_DS1_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    data_disks:
+      - size: 10
+        storage_account_type: "Standard_LRS"
+      - size: 20
+        # storage_account_type: "Premium_LRS"
+  - name: vmtwo
+    resource_group_name: rgtwo
+    vm_size: "Standard_DS1_v2"
+    data_disks:
+      - size: 30
+        storage_account_type: "Standard_LRS"
