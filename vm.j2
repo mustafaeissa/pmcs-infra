@@ -19,6 +19,9 @@
     computer_name  = "{{ vm.name }}"
     admin_username = "{{ vm.admin_username | default('c9admin') }}"
     admin_password = "{{ vm.admin_password | default('C9superC0mpl3x') }}"
+{% if vm.os != "windows2016" %}
+    custom_data = "#!/bin/sh\nrpm -Uvh https://rhui-1.microsoft.com/pulp/repos/microsoft-azure-rhel7/rhui-azure-rhel7-2.2-74.noarch.rpm"
+{% endif %}
   }
   {% if vm.os == "windows2016" %}
   os_profile_windows_config {
