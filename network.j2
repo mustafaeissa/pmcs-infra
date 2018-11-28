@@ -14,7 +14,7 @@ resource "azurerm_resource_group" "rg{{ env.name }}" {
 
 resource "azurerm_subnet" "{{ env.name }}sbnt" {
   name                 = "{{ env.name }}sbnt"
-  resource_group_name  = "rg{{ env.name }}"
+  resource_group_name  = "rg{{ global.mgmt_env_name }}"
   virtual_network_name = "{{ global.mgmt_env_name }}vnet"
   address_prefix       = "{{ env.subnet_address_prefix }}"
 }
