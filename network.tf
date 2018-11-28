@@ -25,7 +25,7 @@ resource "azurerm_resource_group" "rgtwo" {
 
 resource "azurerm_subnet" "twosbnt" {
   name                 = "twosbnt"
-  resource_group_name  = "rgtwo"
+  resource_group_name  = "rgmgmt"
   virtual_network_name = "mgmtvnet"
   address_prefix       = "10.0.2.0/24"
 }

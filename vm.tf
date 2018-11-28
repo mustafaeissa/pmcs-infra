@@ -22,15 +22,16 @@
     computer_name  = "vmone"
     admin_username = "c9admin"
     admin_password = "C9superC0mpl3x"
+    custom_data = "#!/bin/sh\nrpm -Uvh https://rhui-1.microsoft.com/pulp/repos/microsoft-azure-rhel7/rhui-azure-rhel7-2.2-74.noarch.rpm"
   }
-  os_profile_linux_config {
+    os_profile_linux_config {
     disable_password_authentication = false
     ssh_keys {
       path     = "/home/c9admin/.ssh/authorized_keys"
       key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
     }
   }
-
+  
 }
 
 resource "azurerm_network_interface" "vmone-nic1" {
@@ -99,15 +100,16 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vmone-disk2" {
     computer_name  = "vmtwo"
     admin_username = "c9admin"
     admin_password = "C9superC0mpl3x"
+    custom_data = "#!/bin/sh\nrpm -Uvh https://rhui-1.microsoft.com/pulp/repos/microsoft-azure-rhel7/rhui-azure-rhel7-2.2-74.noarch.rpm"
   }
-  os_profile_linux_config {
+    os_profile_linux_config {
     disable_password_authentication = false
     ssh_keys {
       path     = "/home/c9admin/.ssh/authorized_keys"
       key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
     }
   }
-
+  
 }
 
 resource "azurerm_network_interface" "vmtwo-nic1" {
@@ -162,14 +164,11 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vmtwo-disk1" {
     admin_username = "c9admin"
     admin_password = "C9superC0mpl3x"
   }
-  os_profile_linux_config {
-    disable_password_authentication = false
-    ssh_keys {
-      path     = "/home/c9admin/.ssh/authorized_keys"
-      key_data = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
-    }
+    os_profile_windows_config {
+    provision_vm_agent = true
+    enable_automatic_upgrades = true
   }
-
+  
 }
 
 resource "azurerm_network_interface" "dc01-nic1" {
@@ -210,14 +209,11 @@ resource "azurerm_network_interface" "dc01-nic1" {
     admin_username = "c9admin"
     admin_password = "C9superC0mpl3x"
   }
-  os_profile_linux_config {
-    disable_password_authentication = false
-    ssh_keys {
-      path     = "/home/c9admin/.ssh/authorized_keys"
-      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBnPLyd7zNmso5Y6k1vMSGEPy1pVhlg1yAOylNKRpi1GtAKjGIv5QTcmaBOspGxFN/JC6P6HYJvRuBQxgNXvLZMJwEBKAQaLY11xvmSY0hhzij5zNMfQKiY5U3HMFKfuvc/KNlArF90zFM03sky/YQeMhKXzuWErMST5NnZV7BvkRSKjDjZRV6A4s2F2snfN8Zz6PKjZB2v+Ce29BBn1z1YHJjK9j/yPIjzq+DatAcHF8pt6VGtKnGJyykij0paxKTTTieZYR6EAajdwP9lW7y1/eP7ExMfGNwFi9FUPlJ1Q6jpfsh9zN7f8q4GGBv5FieUuQdP5uIEueLwfnXAAFx kim0@kimo.local"
-    }
+    os_profile_windows_config {
+    provision_vm_agent = true
+    enable_automatic_upgrades = true
   }
-
+  
 }
 
 resource "azurerm_network_interface" "dc02-nic1" {
