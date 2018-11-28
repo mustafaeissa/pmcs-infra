@@ -7,7 +7,7 @@
     vm_size               = "{{ vm.vm_size }}"
   
   storage_image_reference {
-    {{ global.ubuntu1604 }}
+    {{ global[vm.os | default('rhel72') ] }}
   }
   storage_os_disk {
     name              = "{{ vm.name }}-osdisk"
@@ -38,8 +38,13 @@ resource "azurerm_network_interface" "{{ vm.name }}-nic1" {
   ip_configuration {
     name                          = "{{ vm.name }}ipcfg1"
     subnet_id                     = "${azurerm_subnet.{{ global.mgmt_env_name }}sbnt.id}"
+{% if vm.private_ip_address %}
+    private_ip_address_allocation = "static"
+    private_ip_address = "{{ vm.private_ip_address }}"
+{% else %}
     private_ip_address_allocation = "dynamic"
-  }
+{% endif %}
+}
 }
 
 {% for disk in vm.data_disks %}

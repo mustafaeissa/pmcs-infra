@@ -1,14 +1,23 @@
 # Global params
 global:
-  ubuntu1604: |
-    publisher = "Canonical"
-        offer     = "UbuntuServer"
-        sku       = "16.04-LTS"
+  rhel72: |
+    publisher = "RedHat"
+        offer     = "RHEL"
+        sku       = "7.2"
+        version   = "7.2.2017090716"
+  windows2016: |
+    publisher = "MicrosoftWindowsServer"
+        offer     = "WindowsServer"
+        sku       = "2016-Datacenter"
         version   = "latest"
   c9admin_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBlS0XJITBaLXiN3UTiKlMPjY9i/fOOpb3TEnIs+M4oI kim0@Kamal-MBP-7.local"
   location: "northeurope"
   vnet_address_space: "10.0.0.0/16"
   mgmt_env_name: mgmt
+  vnet_dns_servers:
+    - "10.0.1.10"   # dc01. Must be in mgmt subnet!
+    - "10.0.1.11"   # dco2
+    - "168.63.129.16" # Azure provided DNS as fallback. Maybe remove later!
 
 # Assumes every env, gets one RG, one subnet and one NSG
 environments:
@@ -33,3 +42,14 @@ vmlist:
     data_disks:
       - size: 30
         storage_account_type: "Standard_LRS"
+  - name: dc01
+    resource_group_name: rgmgmt
+    vm_size: "Standard_DS1_v2"
+    private_ip_address: "10.0.1.10"
+    os: windows2016
+  - name: dc02
+    resource_group_name: rgmgmt
+    vm_size: "Standard_DS1_v2"
+    private_ip_address: "10.0.1.11"
+    os: windows2016
+    

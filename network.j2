@@ -3,6 +3,7 @@ resource "azurerm_virtual_network" "{{ global.mgmt_env_name }}vnet" {
   address_space       = ["{{ global.vnet_address_space }}"]
   location            = "{{ global.location }}"
   resource_group_name = "rg{{ global.mgmt_env_name }}"
+  dns_servers = [{% for ip in global.vnet_dns_servers %}"{{ip}}"{% if not loop.last %}, {% endif %}{% endfor %}]
 }
 
 {% for env in environments %}

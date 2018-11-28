@@ -3,6 +3,7 @@ resource "azurerm_virtual_network" "mgmtvnet" {
   address_space       = ["10.0.0.0/16"]
   location            = "northeurope"
   resource_group_name = "rgmgmt"
+  dns_servers = ["10.0.1.10", "10.0.1.11", "168.63.129.16"]
 }
 
 resource "azurerm_resource_group" "rgmgmt" {
