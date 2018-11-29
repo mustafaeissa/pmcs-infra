@@ -2,7 +2,7 @@ resource "azurerm_virtual_network" "mgmtvnet" {
   name                = "mgmtvnet"
   address_space       = ["10.0.0.0/16"]
   location            = "northeurope"
-  resource_group_name = "rgmgmt"
+  resource_group_name = "${azurerm_resource_group.rgmgmt.name}"
   dns_servers = ["10.0.1.10", "10.0.1.11", "168.63.129.16"]
 }
 
@@ -13,8 +13,8 @@ resource "azurerm_resource_group" "rgmgmt" {
 
 resource "azurerm_subnet" "mgmtsbnt" {
   name                 = "mgmtsbnt"
-  resource_group_name  = "rgmgmt"
-  virtual_network_name = "mgmtvnet"
+  resource_group_name  = "${azurerm_resource_group.rgmgmt.name}"
+  virtual_network_name = "${azurerm_virtual_network.mgmtvnet.name}"
   address_prefix       = "10.0.1.0/24"
 }
 
@@ -25,8 +25,8 @@ resource "azurerm_resource_group" "rgtwo" {
 
 resource "azurerm_subnet" "twosbnt" {
   name                 = "twosbnt"
-  resource_group_name  = "rgmgmt"
-  virtual_network_name = "mgmtvnet"
+  resource_group_name  = "${azurerm_resource_group.rgmgmt.name}"
+  virtual_network_name = "${azurerm_virtual_network.mgmtvnet.name}"
   address_prefix       = "10.0.2.0/24"
 }
 

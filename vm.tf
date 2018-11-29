@@ -22,7 +22,6 @@
     computer_name  = "vmone"
     admin_username = "c9admin"
     admin_password = "C9superC0mpl3x"
-    custom_data = "#!/bin/sh\nrpm -Uvh https://rhui-1.microsoft.com/pulp/repos/microsoft-azure-rhel7/rhui-azure-rhel7-2.2-74.noarch.rpm"
   }
     os_profile_linux_config {
     disable_password_authentication = false
@@ -100,7 +99,6 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vmone-disk2" {
     computer_name  = "vmtwo"
     admin_username = "c9admin"
     admin_password = "C9superC0mpl3x"
-    custom_data = "#!/bin/sh\nrpm -Uvh https://rhui-1.microsoft.com/pulp/repos/microsoft-azure-rhel7/rhui-azure-rhel7-2.2-74.noarch.rpm"
   }
     os_profile_linux_config {
     disable_password_authentication = false
