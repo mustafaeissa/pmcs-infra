@@ -12,44 +12,335 @@ global:
         version   = "latest"
   c9admin_ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBnPLyd7zNmso5Y6k1vMSGEPy1pVhlg1yAOylNKRpi1GtAKjGIv5QTcmaBOspGxFN/JC6P6HYJvRuBQxgNXvLZMJwEBKAQaLY11xvmSY0hhzij5zNMfQKiY5U3HMFKfuvc/KNlArF90zFM03sky/YQeMhKXzuWErMST5NnZV7BvkRSKjDjZRV6A4s2F2snfN8Zz6PKjZB2v+Ce29BBn1z1YHJjK9j/yPIjzq+DatAcHF8pt6VGtKnGJyykij0paxKTTTieZYR6EAajdwP9lW7y1/eP7ExMfGNwFi9FUPlJ1Q6jpfsh9zN7f8q4GGBv5FieUuQdP5uIEueLwfnXAAFx kim0@kimo.local"
   location: "northeurope"
-  vnet_address_space: "10.0.0.0/16"
-  mgmt_env_name: mgmt
+  vnet_address_space: "172.16.0.0/16"
   vnet_dns_servers:
-    - "10.0.1.10"   # dc01. Must be in mgmt subnet!
-    - "10.0.1.11"   # dco2
+    - "172.16.90.10"   # dc01. Must be in mgmt subnet!
+    - "172.16.90.11"   # dco2
     - "168.63.129.16" # Azure provided DNS as fallback. Maybe remove later!
+  mgmt_env_name: mgmt
 
 # Assumes every env, gets one RG, one subnet and one NSG
 environments:
   - name: mgmt
-    subnet_address_prefix: "10.0.1.0/24"
-  - name: two
-    subnet_address_prefix: "10.0.2.0/24"
+    subnet_address_prefix: "172.16.90.0/24"
+  - name: cif-conv-coffre
+    subnet_address_prefix: "172.16.10.0/24"
+  - name: cif-conv-tu
+    subnet_address_prefix: "172.16.20.0/24"
+  - name: cif-conv-rt
+    subnet_address_prefix: "172.16.30.0/24"
+  - name: cif-conv-rf
+    subnet_address_prefix: "172.16.40.0/24"
+  - name: cif-conv-homolog
+    subnet_address_prefix: "172.16.50.0/24"
+  - name: cif-islam-coffre
+    subnet_address_prefix: "172.16.60.0/24"
+  - name: cif-islam-tu
+    subnet_address_prefix: "172.16.70.0/24"
+  - name: cif-islam-homolog
+    subnet_address_prefix: "172.16.80.0/24"
 
 vmlist:
-  - name: vmone
-    resource_group_name: rgmgmt
-    vm_size               : "Standard_DS1_v2"
+  - name: bdd-coffre
+    resource_group_name: cif-conv-coffre
+    vm_size   : "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+    os_disk: 10
+
+  - name: corebanking-coffre
+    resource_group_name: cif-conv-coffre
+    vm_size   : "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3s-coffre
+    resource_group_name: cif-conv-coffre
+    vm_size   : "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3-coffre
+    resource_group_name: cif-conv-coffre
+    vm_size   : "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bpm-coffre
+    resource_group_name: cif-conv-coffre
+    vm_size   : "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: sde-coffre
+    resource_group_name: cif-conv-coffre
+    vm_size   : "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: http-coffre
+    resource_group_name: cif-conv-coffre
+    vm_size   : "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bdd-tu
+    resource_group_name: cif-conv-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: corebanking-tu
+    resource_group_name: cif-conv-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+    os_disk: 10
+
+  - name: x3s-tu
+    resource_group_name: cif-conv-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3-tu
+    resource_group_name: cif-conv-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bpm-tu
+    resource_group_name: cif-conv-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: sde-tu
+    resource_group_name:  cif-conv-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: mapping-tu
+    resource_group_name: cif-conv-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bdd-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D8_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: corebanking-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D4_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3s-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bpm-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: sde-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: http-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D11_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: ypcfront-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D4s_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bdd-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_E2s_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: corebanking-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_E2_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3s-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bpm-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: sde-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D4s_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: http-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D11_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: signature-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D11_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: ypcfront-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D4s_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: ypcbdd-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: mapping-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: digitech-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: arabsapp-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D8s_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: arabsdbb-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_E8_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: solid-rf
+    resource_group_name: cif-conv-rf
+    vm_size: "Standard_D8_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bdd-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D8_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: corebanking-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D4_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3s-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bpm-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: sde-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: http-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D11_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: signature-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: ypcfront-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D4s_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: ypcbdd-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: mapping-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: digitech-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: arabsapp-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D8s_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: arabsdbb-homolog
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D8_v3"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bdd-islam-coffre
+    resource_group_name: cif-islam-coffre
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: corebank-islam-coffre
+    resource_group_name: cif-islam-coffre
+    vm_size: "Standard_D2_v2"
     os_disk_managed_disk_type: "StandardSSD_LRS"
-    data_disks:
-      - size: 10
-        storage_account_type: "Standard_LRS"
-      - size: 20
-        # storage_account_type: "Premium_LRS"
-  - name: vmtwo
-    resource_group_name: rgtwo
-    vm_size: "Standard_DS1_v2"
-    data_disks:
-      - size: 30
-        storage_account_type: "Standard_LRS"
+
+  - name: x3s-islam-coffre
+    resource_group_name: cif-islam-coffre
+    vm_size: "Standard_D1_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: x3-islam-coffre
+    resource_group_name: cif-islam-coffre
+    vm_size: "Standard_D1_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: bpm-islam-coffre
+    resource_group_name: cif-islam-coffre
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: sde-islam-coffre
+    resource_group_name: cif-islam-coffre
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: http-islam-coffre
+    resource_group_name: cif-islam-coffre
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
   - name: dc01
-    resource_group_name: rgmgmt
+    resource_group_name: mgmt
     vm_size: "Standard_DS1_v2"
-    private_ip_address: "10.0.1.10"
+    private_ip_address: "172.16.90.10"
     os: windows2016
+
   - name: dc02
-    resource_group_name: rgmgmt
+    resource_group_name: mgmt
     vm_size: "Standard_DS1_v2"
-    private_ip_address: "10.0.1.11"
+    private_ip_address: "172.16.90.11"
     os: windows2016
-    
