@@ -338,9 +338,17 @@ vmlist:
     vm_size: "Standard_DS1_v2"
     private_ip_address: "172.16.90.10"
     os: windows2016
+    extension:
+      name: winrm
+      fileUris: "[\"https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1\"]"
+      commandToExecute: "powershell.exe -ExecutionPolicy Unrestricted -File ConfigureRemotingForAnsible.ps1 -Verbose -EnableCredSSP"
 
   - name: dc02
     resource_group_name: mgmt
     vm_size: "Standard_DS1_v2"
     private_ip_address: "172.16.90.11"
     os: windows2016
+    extension:
+      name: winrm
+      fileUris: "[\"https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1\"]"
+      commandToExecute: "powershell.exe -ExecutionPolicy Unrestricted -File ConfigureRemotingForAnsible.ps1 -Verbose -EnableCredSSP"

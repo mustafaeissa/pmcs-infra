@@ -2,3 +2,5 @@
 .ipynb_checkpoints
 .terraform
 *.tf
+terraform.tfstate
+terraform.tfstate.backup
