@@ -352,3 +352,9 @@ vmlist:
       name: winrm
       fileUris: "[\"https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1\"]"
       commandToExecute: "powershell.exe -ExecutionPolicy Unrestricted -File ConfigureRemotingForAnsible.ps1 -Verbose -EnableCredSSP"
+
+  - name: bastion
+    resource_group_name: mgmt
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    public_ip_address_allocation: static

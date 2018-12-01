@@ -1,0 +1,42 @@
+resource "azurerm_recovery_services_vault" "cif-vault" {
+  name                = "cif-vault"
+  location            = "${azurerm_resource_group.{{ global.mgmt_env_name }}.location}"
+  resource_group_name = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+  sku                 = "Standard"
+}
+
+resource "azurerm_recovery_services_protection_policy_vm" "cif-daily-backup-policy" {
+  name                = "cif-daily-backup-policy"
+  resource_group_name = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+  recovery_vault_name = "${azurerm_recovery_services_vault.cif-vault.name}"
+
+  backup = {
+    frequency = "Daily"
+    time      = "03:00"
+  }
+
+  retention_daily = {
+    count = 30
+  }
+
+  retention_weekly = {
+    count    = 12
+    weekdays = ["Saturday"]
+  }
+
+  retention_monthly = {
+    count    = 7
+    weekdays = ["Sunday"]
+    weeks    = ["First", "Third"]
+  }
+}
+
+{% for vm in vmlist %}
+resource "azurerm_recovery_services_protected_vm" "{{ vm.name }}-backup" {
+  resource_group_name = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+  recovery_vault_name = "${azurerm_recovery_services_vault.cif-vault.name}"
+  source_vm_id        = "${azurerm_virtual_machine.{{ vm.name }}.id}"
+  backup_policy_id    = "${azurerm_recovery_services_protection_policy_vm.cif-daily-backup-policy.id}"
+}
+
+{% endfor %}
