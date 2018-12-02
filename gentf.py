@@ -23,6 +23,7 @@ def redner_tf(tpl, tfo, data):
     with open(tfo, 'w') as tfo:
         tfo.write(tf_out)
 
+redner_tf('main.j2', 'main.tf', data)
 redner_tf('vm.j2', 'vm.tf', data)
 redner_tf('network.j2', 'network.tf', data)
 redner_tf('backup.j2', 'backup.tf', data)
