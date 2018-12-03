@@ -236,11 +236,6 @@ vmlist:
     vm_size: "Standard_E8_v3"
     os_disk_managed_disk_type: "Standard_LRS"
 
-  - name: solid-rf
-    resource_group_name: cif-conv-rf
-    vm_size: "Standard_D8_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
   - name: bdd-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D8_v3"
