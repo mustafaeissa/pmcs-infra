@@ -5,6 +5,11 @@ global:
         offer     = "RHEL"
         sku       = "7.2"
         version   = "7.2.2017090716"
+  windows2012: |
+    publisher = "MicrosoftWindowsServer"
+        offer     = "WindowsServer"
+        sku       = "2012-Datacenter"
+        version   = "latest"
   windows2016: |
     publisher = "MicrosoftWindowsServer"
         offer     = "WindowsServer"
@@ -340,6 +345,114 @@ vmlist:
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
     os_disk_managed_disk_type: "StandardSSD_LRS"
+    
+  - name: bdd-islam-tu
+    resource_group_name: cif-islam-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: corebank-islam-tu
+    resource_group_name: cif-islam-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+    
+
+  - name: x3s-islam-tu
+    resource_group_name: cif-islam-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: x3-islam-tu 
+    resource_group_name: cif-islam-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: bpm-islam-tu 
+    resource_group_name: cif-islam-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+    
+  - name: sde-islam-tu
+    resource_group_name: cif-islam-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+
+  - name: http-islam-tu
+    resource_group_name: cif-islam-tu
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "Standard_LRS"
+    
+  - name: bdd-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_E2s_v3"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: coreBank-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D11_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: x3s-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: x3-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: bpm-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: sde-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: http-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: console-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D2_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: bal-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D1_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: signature-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    os: windows2012
+
+  - name: ypcfront-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D4s_v3"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: ypcbdd-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D3_v2"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: mapping-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+
+  - name: digitech-islam-homolog
+    resource_group_name: cif-islam-homolog
+    vm_size: "Standard_D4_v3"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    os: windows2012    
 
   - name: dc01
     resource_group_name: mgmt

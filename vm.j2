@@ -21,7 +21,7 @@
     admin_username = "{{ vm.admin_username | default('c9admin') }}"
     admin_password = "{{ vm.admin_password | default('C9superC0mpl3x') }}"
   }
-  {% if vm.os == "windows2016" %}
+  {% if vm.os == "windows2016" or vm.os == "windows2012" %}
   os_profile_windows_config {
     provision_vm_agent = true
     enable_automatic_upgrades = true
