@@ -18,6 +18,8 @@ global:
     - "172.16.90.11"   # dco2
     - "168.63.129.16" # Azure provided DNS as fallback. Maybe remove later!
   mgmt_env_name: mgmt
+  vpn_subnet_address_prefix: "172.16.100.0/24" 
+  vpn_client_address_space: "10.13.13.0/24"
 
 # Assumes every env, gets one RG, one subnet and one NSG
 environments:
@@ -39,6 +41,12 @@ environments:
     subnet_address_prefix: "172.16.70.0/24"
   - name: cif-islam-homolog
     subnet_address_prefix: "172.16.80.0/24"
+
+users:
+  - name: akamal
+  - name: meissa
+  - name: sabdelkader
+  - name: aayman
 
 vmlist:
   - name: bdd-coffre

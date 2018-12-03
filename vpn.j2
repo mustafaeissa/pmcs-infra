@@ -1,0 +1,149 @@
+locals {
+  ca_cert_lines = "${split("\n", tls_self_signed_cert.ca.cert_pem)}"
+}
+
+variable "p12_password" {
+  type = "string"
+}
+
+resource "azurerm_subnet" "GatewaySubnet" {
+  name = "GatewaySubnet"
+  resource_group_name  = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+  virtual_network_name = "${azurerm_virtual_network.{{ global.mgmt_env_name }}vnet.name}"
+  address_prefix = "{{ global.vpn_subnet_address_prefix }}"
+}
+
+resource "azurerm_public_ip" "cif-vpn-pubip-1" {
+  name = "cif-vpn-pubip-1"
+  location = "{{ global.location }}"
+  resource_group_name  = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+  public_ip_address_allocation = "Dynamic"
+  sku = "Basic"
+  domain_name_label = "cif-vpn-pubip-1"
+}
+
+resource "azurerm_virtual_network_gateway" "cifvpn" {
+  name = "cifvpn"
+  location = "{{ global.location }}"
+  resource_group_name  = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+
+  type = "Vpn"
+  vpn_type = "RouteBased"
+
+  active_active = false
+  enable_bgp = false
+  sku = "VpnGw2"
+
+  ip_configuration {
+    name = "vnetGatewayConfig"
+    public_ip_address_id = "${azurerm_public_ip.cif-vpn-pubip-1.id}"
+    private_ip_address_allocation = "Dynamic"
+    subnet_id = "${azurerm_subnet.GatewaySubnet.id}"
+  }
+
+  vpn_client_configuration {
+    address_space = [ "{{ global.vpn_client_address_space }}" ]
+
+    root_certificate {
+      name = "Cloud-Niners-Root-CA"
+      # Azure needs the PEM data with the header & footer. Some split and join magic to adapt!
+      public_cert_data = "${ join("", slice(local.ca_cert_lines, 1, length(local.ca_cert_lines) - 2 )) }"
+    }
+
+    # revoked_certificate {}
+    vpn_client_protocols = ["SSTP", "IkeV2"]
+  }
+}
+
+resource "tls_private_key" "ca" {
+  algorithm = "RSA"
+}
+
+resource "tls_self_signed_cert" "ca" {
+  key_algorithm = "${tls_private_key.ca.algorithm}"
+  private_key_pem = "${tls_private_key.ca.private_key_pem}"
+
+  subject {
+    common_name = "Cloud Niners"
+    organization = "Cloud Niners"
+    country = "EG"
+  }
+
+  validity_period_hours = 43800 # 5 years = 43800
+  is_ca_certificate = true
+
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+    "client_auth",
+    "cert_signing"
+  ]
+}
+
+resource "local_file" "ca_cert" {
+    content = "${tls_self_signed_cert.ca.cert_pem}"
+    filename = "vpn_keys/ca-cert.pem"
+    #provisioner "local-exec" {
+    #    command = "openssl x509 -in ca-cert.pem -outform der | base64 > ca-cert-payload.pem"
+    #    working_dir = "vpn_keys"
+    #}
+}
+
+resource "local_file" "ca_private_key" {
+    content = "${tls_private_key.ca.private_key_pem}"
+    filename = "vpn_keys/ca-key.pem"
+}
+
+{% for user in users %}
+
+resource "tls_private_key" "{{ user.name }}" {
+  algorithm = "RSA"
+}
+
+resource "tls_cert_request" "{{ user.name }}" {
+  key_algorithm = "${tls_private_key.{{ user.name }}.algorithm}"
+  private_key_pem = "${tls_private_key.{{ user.name }}.private_key_pem}"
+
+  subject {
+    common_name = "{{ user.name }}.cloud9ers.com"
+    organization = "Cloud Niners"
+    country = "EG"
+  }
+
+  dns_names = ["{{ user.name }}.cloud9ers.com"]
+}
+
+resource "tls_locally_signed_cert" "{{ user.name }}" {
+  cert_request_pem = "${tls_cert_request.{{ user.name }}.cert_request_pem}"
+
+  ca_key_algorithm = "${tls_private_key.ca.algorithm}"
+  ca_private_key_pem = "${tls_private_key.ca.private_key_pem}"
+  ca_cert_pem = "${tls_self_signed_cert.ca.cert_pem}"
+
+  validity_period_hours = 43800
+
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+    "client_auth",
+  ]
+}
+
+resource "local_file" "{{ user.name }}_cert" {
+    depends_on = ["local_file.{{ user.name }}_private_key"]
+    content = "${tls_locally_signed_cert.{{ user.name }}.cert_pem}"
+    filename = "vpn_keys/{{ user.name }}-cert.pem"
+    provisioner "local-exec" {
+        command = "openssl pkcs12 -in {{ user.name }}-cert.pem -inkey {{ user.name }}-key.pem -certfile ca-cert.pem -export -out {{ user.name }}.p12 -password pass:${var.p12_password}"
+        working_dir = "vpn_keys"
+    }
+}
+
+resource "local_file" "{{ user.name }}_private_key" {
+    content = "${tls_private_key.{{ user.name }}.private_key_pem}"
+    filename = "vpn_keys/{{ user.name }}-key.pem"
+}
+
+{% endfor %}
