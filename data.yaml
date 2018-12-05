@@ -5,6 +5,11 @@ global:
         offer     = "RHEL"
         sku       = "7.2"
         version   = "7.2.2017090716"
+  ubuntu1804:  |      
+    publisher = "Canonical"
+        offer     = "UbuntuServer"
+        sku       = "18.04-LTS"
+        version   = "18.04.201804262"      
   windows2012: |
     publisher = "MicrosoftWindowsServer"
         offer     = "WindowsServer"
@@ -17,6 +22,7 @@ global:
         version   = "latest"
   c9admin_ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBnPLyd7zNmso5Y6k1vMSGEPy1pVhlg1yAOylNKRpi1GtAKjGIv5QTcmaBOspGxFN/JC6P6HYJvRuBQxgNXvLZMJwEBKAQaLY11xvmSY0hhzij5zNMfQKiY5U3HMFKfuvc/KNlArF90zFM03sky/YQeMhKXzuWErMST5NnZV7BvkRSKjDjZRV6A4s2F2snfN8Zz6PKjZB2v+Ce29BBn1z1YHJjK9j/yPIjzq+DatAcHF8pt6VGtKnGJyykij0paxKTTTieZYR6EAajdwP9lW7y1/eP7ExMfGNwFi9FUPlJ1Q6jpfsh9zN7f8q4GGBv5FieUuQdP5uIEueLwfnXAAFx kim0@kimo.local"
   location: "northeurope"
+  vnet_name: cifplatform
   vnet_address_space: "172.16.0.0/16"
   vnet_dns_servers:
     - "172.16.90.10"   # dc01. Must be in mgmt subnet!
@@ -25,6 +31,11 @@ global:
   mgmt_env_name: mgmt
   vpn_subnet_address_prefix: "172.16.100.0/24" 
   vpn_client_address_space: "10.13.13.0/24"
+  vpns2s:
+  - name: CIF
+    gateway_address: 196.179.246.41
+    address_space: 10.10.21.0/24
+    shared_key:
 
 # Assumes every env, gets one RG, one subnet and one NSG
 environments:
@@ -52,406 +63,606 @@ users:
   - name: meissa
   - name: sabdelkader
   - name: aayman
-
+  - name: adhezacif
+  - name: rnakoiricif
+  - name: kmbarkicif
+  - name: emissinhouncif
+  - name: ckeitacif
+  - name: hapertetsab 
 vmlist:
   - name: bdd-coffre
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-    os_disk: 10
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.10.10"
+    data_disks:
+      - size: 256
+        storage_account_type: "StandardSSD_LRS"
 
   - name: corebanking-coffre
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
+    private_ip_address: "172.16.10.11"
+    data_disks:
+      - size: 256
 
   - name: x3s-coffre
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
+    private_ip_address: "172.16.10.12"
+    data_disks:
+      - size: 256
 
   - name: x3-coffre
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.10.13"
+    data_disks:
+      - size: 256
+      
   - name: bpm-coffre
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.10.14"
+    
+    
   - name: sde-coffre
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.10.15"
+      
   - name: http-coffre
     resource_group_name: cif-conv-coffre
-    vm_size   : "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    vm_size   : "Standard_D2_v2" 
+    private_ip_address: "172.16.10.16"
+    
   - name: bdd-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.20.10"
+    data_disks:
+      - size: 256
+        storage_account_type: "StandardSSD_LRS"
 
   - name: corebanking-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-    os_disk: 10
-
+    private_ip_address: "172.16.20.11" 
+    
   - name: x3s-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.20.12"
+    data_disks:
+      - size: 256
+       
   - name: x3-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.20.13"
+    data_disks:
+      - size: 256
+       
   - name: bpm-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.20.14"
+        
   - name: sde-tu
     resource_group_name:  cif-conv-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.20.15"
+     
   - name: mapping-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.20.16"
+    
   - name: bdd-rt
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D8_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.30.10"
+    data_disks:
+      - size: 2048
+        storage_account_type: "StandardSSD_LRS"
 
   - name: corebanking-rt
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D4_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
-  - name: x3s-rt
+    private_ip_address: "172.16.30.11"
+  
+  - name: x3s-rt-1
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
-  - name: x3-rt
+    private_ip_address: "172.16.30.12"
+    data_disks:
+      - size: 256
+      
+  - name: x3s-rt-2
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.30.13"
+    data_disks:
+      - size: 256   
+        
+  - name: x3-rt-1
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D3_v2"
+    private_ip_address: "172.16.30.14"
+    data_disks:
+      - size: 256
+      
+  - name: x3-rt-2
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D3_v2"
+    private_ip_address: "172.16.30.15"
+    data_disks:
+      - size: 256
+        
   - name: bpm-rt
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.30.16"
+   
   - name: sde-rt
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
-  - name: http-rt
+    private_ip_address: "172.16.30.17"
+    
+  - name: http-rt-1
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D11_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.30.18"
+    data_disks:
+      - size: 64
+      
+  - name: http-rt-2
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D11_v2"
+    private_ip_address: "172.16.30.19"
+    data_disks:
+      - size: 64  
+   
+  - name: console-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D11_v2"
+    private_ip_address: "172.16.30.20"
+    data_disks:
+      - size: 64
+      
+  - name: bal-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D11_v2"
+    private_ip_address: "172.16.30.21"
+    
   - name: ypcfront-rt
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D4s_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.30.22"
+    data_disks:
+      - size: 512
+      
+  - name: ypcbdd-rt
+    resource_group_name: cif-conv-rt
+    vm_size: "Standard_D4s_v3"
+    os_disk_managed_disk_type: "Premium_LRS"
+    private_ip_address: "172.16.30.23"
+    data_disks:
+      - size: 1024  
+        storage_account_type: "Premium_LRS"
+        
   - name: bdd-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_E2s_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "Premium_LRS"
+    private_ip_address: "172.16.40.10"
+    data_disks:
+      - size: 512
+        storage_account_type: "Premium_LRS"
+        
   - name: corebanking-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_E2_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.11"
+      
   - name: x3s-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.12"
+    data_disks:
+      - size: 256
+     
   - name: x3-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.13"
+    data_disks:
+      - size: 256
+        
   - name: bpm-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.14"
+       
   - name: sde-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D4s_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.15"
+        
   - name: http-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D11_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.16"
+    
   - name: signature-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D11_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os: windows2012
+    private_ip_address: "172.16.40.17"
+    data_disks:
+      - size: 512
+       
   - name: ypcfront-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D4s_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.18"
+    data_disks:
+      - size: 512
+        
   - name: ypcbdd-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.40.19"
+    data_disks:
+      - size: 512
+        storage_account_type: "StandardSSD_LRS"
+        
   - name: mapping-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.20"
+    data_disks:
+      - size: 256
+       
   - name: digitech-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.40.21"
+    os: windows2012
+    data_disks:
+      - size: 256
+        storage_account_type: "StandardSSD_LRS"
+        
   - name: arabsapp-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D8s_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.40.22"
+    data_disks:
+      - size: 512
+        
   - name: arabsdbb-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_E8_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.40.23"
+    data_disks:
+      - size: 512
+        storage_account_type: "StandardSSD_LRS"
+       
   - name: bdd-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D8_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.50.10"
+    data_disks:
+      - size: 2048
+        storage_account_type: "StandardSSD_LRS"
+        
   - name: corebanking-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
-  - name: x3s-homolog
+    private_ip_address: "172.16.50.11"
+    data_disks:
+      - size: 256
+       
+  - name: x3s-homolog-1
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
-  - name: x3-homolog
+    private_ip_address: "172.16.50.12"
+    data_disks:
+      - size: 256
+      
+  - name: x3s-homolog-2
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.50.13"
+    data_disks:
+      - size: 256    
+      
+  - name: x3-homolog-1
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D3_v2"
+    private_ip_address: "172.16.50.14"
+    data_disks:
+      - size: 256
+      
+  - name: x3-homolog-2
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D3_v2"
+    private_ip_address: "172.16.50.15"
+    data_disks:
+      - size: 256
+      
   - name: bpm-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.50.16"
+    
   - name: sde-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
-  - name: http-homolog
+    private_ip_address: "172.16.50.17"
+    
+  - name: http-homolog-1
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D11_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.50.18"
+    data_disks:
+      - size: 64
+        
+  - name: http-homolog-2
+    resource_group_name: cif-conv-homolog
+    vm_size: "Standard_D11_v2"
+    private_ip_address: "172.16.50.19"
+    data_disks:
+      - size: 64
+      
   - name: signature-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os: windows2012
+    private_ip_address: "172.16.50.20"
+    data_disks:
+      - size: 2048
+      
   - name: ypcfront-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4s_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.50.21"
+    data_disks:
+      - size: 512
+        
   - name: ypcbdd-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.50.21"
+    data_disks:
+      - size: 1024
+        storage_account_type: "StandardSSD_LRS"
+        
   - name: mapping-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.50.22"
+    data_disks:
+      - size: 512
+       
   - name: digitech-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    os: windows2012
+    private_ip_address: "172.16.50.23"
+    data_disks:
+      - size: 512
+        storage_account_type: "StandardSSD_LRS"
+        
   - name: arabsapp-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D8s_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.50.24"
+    data_disks:
+      - size: 512
+        
   - name: arabsdbb-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D8_v3"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.50.25"
+    data_disks:
+      - size: 512
+        storage_account_type: "StandardSSD_LRS"
+       
   - name: bdd-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.60.10"
+    data_disks:
+      - size: 256
+        storage_account_type: "StandardSSD_LRS"
+        
   - name: corebank-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.60.11"
+    
   - name: x3s-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D1_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.60.12"
+    data_disks:
+      - size: 256
+        
   - name: x3-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D1_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.60.13"
+    data_disks:
+      - size: 256
+        
   - name: bpm-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.60.14"
+    
   - name: sde-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.60.15"
+    
   - name: http-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.60.16"
     
   - name: bdd-islam-tu
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.70.10"
+    data_disks:
+      - size: 256
+        storage_account_type: "StandardSSD_LRS"
+        
   - name: corebank-islam-tu
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-    
-
+    private_ip_address: "172.16.70.11"
+     
   - name: x3s-islam-tu
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.70.12"
+     
   - name: x3-islam-tu 
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.70.13"
+    data_disks:
+      - size: 256
+        
   - name: bpm-islam-tu 
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-    
+    private_ip_address: "172.16.70.14"
+    data_disks:
+      - size: 256
+       
   - name: sde-islam-tu
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-
+    private_ip_address: "172.16.70.15"
+        
   - name: http-islam-tu
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "Standard_LRS"
-    
+    private_ip_address: "172.16.70.16"
+    data_disks:
+      - size: 64
+       
   - name: bdd-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_E2s_v3"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    os_disk_managed_disk_type: "Premium_LRS"
+    private_ip_address: "172.16.80.10"
+    data_disks:
+      - size: 512
+        storage_account_type: "Premium_LRS"
+        
   - name: coreBank-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D11_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.80.11"
+ 
   - name: x3s-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.80.12"
+    data_disks:
+      - size: 256
+        
   - name: x3-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.80.13"
+    data_disks:
+      - size: 256
+       
   - name: bpm-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.80.14"
+    
   - name: sde-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.80.15"
+    
   - name: http-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.80.16"
+        
   - name: console-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.80.17"
+    data_disks:
+      - size: 64
+        
   - name: bal-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D1_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-
+    private_ip_address: "172.16.80.18"
+    data_disks:
+      - size: 256
+        
   - name: signature-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
     os: windows2012
+    private_ip_address: "172.16.80.19"
+    data_disks:
+      - size: 2048
 
   - name: ypcfront-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D4s_v3"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.80.20"
+    data_disks:
+      - size: 512
 
   - name: ypcbdd-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D3_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.80.21"
+    data_disks:
+      - size: 512
 
   - name: mapping-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
+    private_ip_address: "172.16.80.22"
+    data_disks:
+      - size: 256
 
   - name: digitech-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D4_v3"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
-    os: windows2012    
+    os: windows2012 
+    private_ip_address: "172.16.80.23"
+    data_disks:
+      - size: 512
 
   - name: dc01
     resource_group_name: mgmt
-    vm_size: "Standard_DS1_v2"
+    vm_size: "Standard_A2_v2"
     private_ip_address: "172.16.90.10"
     os: windows2016
     extension:
@@ -461,7 +672,7 @@ vmlist:
 
   - name: dc02
     resource_group_name: mgmt
-    vm_size: "Standard_DS1_v2"
+    vm_size: "Standard_A2_v2"
     private_ip_address: "172.16.90.11"
     os: windows2016
     extension:
@@ -469,8 +680,14 @@ vmlist:
       fileUris: "[\"https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1\"]"
       commandToExecute: "powershell.exe -ExecutionPolicy Unrestricted -File ConfigureRemotingForAnsible.ps1 -Verbose -EnableCredSSP"
 
-  - name: bastion
+  - name: bastion-1
     resource_group_name: mgmt
-    vm_size: "Standard_D2_v2"
-    os_disk_managed_disk_type: "StandardSSD_LRS"
+    vm_size: "Standard_D4_v3"
+    os: ubuntu1804
     public_ip_address_allocation: static
+    
+  - name: bastion-2
+    resource_group_name: mgmt
+    vm_size: "Standard_D4_v3"
+    os: ubuntu1804
+    public_ip_address_allocation: static  

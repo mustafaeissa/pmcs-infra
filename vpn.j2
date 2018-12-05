@@ -9,7 +9,7 @@ variable "p12_password" {
 resource "azurerm_subnet" "GatewaySubnet" {
   name = "GatewaySubnet"
   resource_group_name  = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
-  virtual_network_name = "${azurerm_virtual_network.{{ global.mgmt_env_name }}vnet.name}"
+  virtual_network_name = "${azurerm_virtual_network.{{ global.vnet_name }}vnet.name}"
   address_prefix = "{{ global.vpn_subnet_address_prefix }}"
 }
 
@@ -20,6 +20,13 @@ resource "azurerm_public_ip" "cif-vpn-pubip-1" {
   public_ip_address_allocation = "Dynamic"
   sku = "Basic"
   domain_name_label = "cif-vpn-pubip-1"
+}
+resource "azurerm_local_network_gateway" "cifvpnlocal" {
+  name                = "cifvpnlocal"
+  location            = "{{ global.location }}"
+  resource_group_name = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+  gateway_address     = "{{ vpns2s.gateway_address }}"
+  address_space       = [ "{{ vpns2s.address_space }}" ]
 }
 
 resource "azurerm_virtual_network_gateway" "cifvpn" {
@@ -53,6 +60,18 @@ resource "azurerm_virtual_network_gateway" "cifvpn" {
     # revoked_certificate {}
     vpn_client_protocols = ["SSTP", "IkeV2"]
   }
+}
+
+resource "azurerm_virtual_network_gateway_connection" "cifvpns2s" {
+  name                = "cifvpns2s"
+  location            =  "{{ global.location }}"
+  resource_group_name = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+
+  type                       = "IPsec"
+  virtual_network_gateway_id = "${azurerm_virtual_network_gateway.cifvpn.id}"
+  local_network_gateway_id   = "${azurerm_local_network_gateway.cifvpnlocal.id}"
+
+  shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
 }
 
 resource "tls_private_key" "ca" {
