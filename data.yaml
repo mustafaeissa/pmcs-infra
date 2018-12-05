@@ -31,8 +31,9 @@ global:
   mgmt_env_name: mgmt
   vpn_subnet_address_prefix: "172.16.100.0/24" 
   vpn_client_address_space: "10.13.13.0/24"
-  vpns2s:
-  - name: CIF
+
+vpns2s:
+  - name: cif
     gateway_address: 196.179.246.41
     address_space: 10.10.21.0/24
     shared_key:

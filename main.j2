@@ -8,7 +8,7 @@ terraform {
 
 resource "azurerm_storage_account" "productiondontdelete" {
   name                     = "productiondontdelete"
-  resource_group_name      = "${azurerm_resource_group.{{ global.mgmt_env_name }}.name}"
+  resource_group_name      = "c9cloudshell"
   location                 = "{{ global.location }}"
   account_kind             = "StorageV2"
   account_tier             = "Standard"
