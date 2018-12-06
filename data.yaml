@@ -37,6 +37,11 @@ vpns2s:
     gateway_address: 196.179.246.41
     address_space: 10.10.21.0/24
     shared_key:
+    
+avsets: 
+  - name: dc
+    resource_group: mgmt    
+    
 
 # Assumes every env, gets one RG, one subnet and one NSG
 environments:
