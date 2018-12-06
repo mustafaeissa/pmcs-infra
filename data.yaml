@@ -105,18 +105,24 @@ vmlist:
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2"
     private_ip_address: "172.16.10.14"
+    data_disks:
+      - size: 128
     
     
   - name: sde-coffre
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2"
     private_ip_address: "172.16.10.15"
+    data_disks:
+      - size: 128
       
   - name: http-coffre
     resource_group_name: cif-conv-coffre
     vm_size   : "Standard_D2_v2" 
     private_ip_address: "172.16.10.16"
-    
+     data_disks:
+      - size: 128
+      
   - name: bdd-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
@@ -130,7 +136,9 @@ vmlist:
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.20.11" 
-    
+    data_disks:
+      - size: 128
+      
   - name: x3s-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
@@ -149,17 +157,23 @@ vmlist:
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.20.14"
-        
+    data_disks:
+      - size: 128
+      
   - name: sde-tu
     resource_group_name:  cif-conv-tu
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.20.15"
-     
+    data_disks:
+      - size: 128
+      
   - name: mapping-tu
     resource_group_name: cif-conv-tu
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.20.16"
-    
+    data_disks:
+      - size: 128
+      
   - name: bdd-rt
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D8_v3"
@@ -173,6 +187,8 @@ vmlist:
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D4_v2"
     private_ip_address: "172.16.30.11"
+    data_disks:
+      - size: 128
   
   - name: x3s-rt-1
     resource_group_name: cif-conv-rt
@@ -206,11 +222,15 @@ vmlist:
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.30.16"
+    data_disks:
+      - size: 128
    
   - name: sde-rt
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D4_v3"
     private_ip_address: "172.16.30.17"
+    data_disks:
+      - size: 128
     
   - name: http-rt-1
     resource_group_name: cif-conv-rt
@@ -237,6 +257,8 @@ vmlist:
     resource_group_name: cif-conv-rt
     vm_size: "Standard_D11_v2"
     private_ip_address: "172.16.30.21"
+    data_disks:
+      - size: 128
     
   - name: ypcfront-rt
     resource_group_name: cif-conv-rt
@@ -267,6 +289,8 @@ vmlist:
     resource_group_name: cif-conv-rf
     vm_size: "Standard_E2_v3"
     private_ip_address: "172.16.40.11"
+    data_disks:
+      - size: 128
       
   - name: x3s-rf
     resource_group_name: cif-conv-rf
@@ -286,16 +310,22 @@ vmlist:
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D3_v2"
     private_ip_address: "172.16.40.14"
+    data_disks:
+      - size: 128
        
   - name: sde-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D4s_v3"
     private_ip_address: "172.16.40.15"
+    data_disks:
+      - size: 128
         
   - name: http-rf
     resource_group_name: cif-conv-rf
     vm_size: "Standard_D11_v2"
     private_ip_address: "172.16.40.16"
+    data_disks:
+      - size: 128
     
   - name: signature-rf
     resource_group_name: cif-conv-rf
@@ -441,7 +471,7 @@ vmlist:
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
     os_disk_managed_disk_type: "StandardSSD_LRS"
-    private_ip_address: "172.16.50.21"
+    private_ip_address: "172.16.50.22"
     data_disks:
       - size: 1024
         storage_account_type: "StandardSSD_LRS"
@@ -449,7 +479,7 @@ vmlist:
   - name: mapping-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
-    private_ip_address: "172.16.50.22"
+    private_ip_address: "172.16.50.23"
     data_disks:
       - size: 512
        
@@ -458,7 +488,7 @@ vmlist:
     vm_size: "Standard_D4_v3"
     os_disk_managed_disk_type: "StandardSSD_LRS"
     os: windows2012
-    private_ip_address: "172.16.50.23"
+    private_ip_address: "172.16.50.24"
     data_disks:
       - size: 512
         storage_account_type: "StandardSSD_LRS"
@@ -466,7 +496,7 @@ vmlist:
   - name: arabsapp-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D8s_v3"
-    private_ip_address: "172.16.50.24"
+    private_ip_address: "172.16.50.25"
     data_disks:
       - size: 512
         
@@ -474,7 +504,7 @@ vmlist:
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D8_v3"
     os_disk_managed_disk_type: "StandardSSD_LRS"
-    private_ip_address: "172.16.50.25"
+    private_ip_address: "172.16.50.26"
     data_disks:
       - size: 512
         storage_account_type: "StandardSSD_LRS"
@@ -492,6 +522,8 @@ vmlist:
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.60.11"
+    data_disks:
+      - size: 128
     
   - name: x3s-islam-coffre
     resource_group_name: cif-islam-coffre
@@ -511,16 +543,22 @@ vmlist:
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.60.14"
+    data_disks:
+      - size: 128
     
   - name: sde-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.60.15"
+    data_disks:
+      - size: 128
     
   - name: http-islam-coffre
     resource_group_name: cif-islam-coffre
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.60.16"
+    data_disks:
+      - size: 128
     
   - name: bdd-islam-tu
     resource_group_name: cif-islam-tu
@@ -535,11 +573,15 @@ vmlist:
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.70.11"
-     
+    data_disks:
+      - size: 128
+      
   - name: x3s-islam-tu
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.70.12"
+    data_disks:
+      - size: 128
      
   - name: x3-islam-tu 
     resource_group_name: cif-islam-tu
@@ -559,7 +601,9 @@ vmlist:
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.70.15"
-        
+    data_disks:
+      - size: 128  
+      
   - name: http-islam-tu
     resource_group_name: cif-islam-tu
     vm_size: "Standard_D2_v2"
@@ -580,6 +624,8 @@ vmlist:
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D11_v2"
     private_ip_address: "172.16.80.11"
+    data_disks:
+      - size: 128
  
   - name: x3s-islam-homolog
     resource_group_name: cif-islam-homolog
@@ -599,17 +645,23 @@ vmlist:
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.80.14"
-    
+    data_disks:
+      - size: 128
+      
   - name: sde-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D3_v2"
     private_ip_address: "172.16.80.15"
-    
+    data_disks:
+      - size: 128
+      
   - name: http-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D2_v2"
     private_ip_address: "172.16.80.16"
-        
+    data_disks:
+      - size: 128
+      
   - name: console-islam-homolog
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D2_v2"
@@ -624,7 +676,7 @@ vmlist:
     data_disks:
       - size: 256
         
-  - name: signature-islam-homolog
+  - name: sig-islam-homo
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D3_v2"
     os: windows2012
@@ -653,7 +705,7 @@ vmlist:
     data_disks:
       - size: 256
 
-  - name: digitech-islam-homolog
+  - name: dig-islam-homo
     resource_group_name: cif-islam-homolog
     vm_size: "Standard_D4_v3"
     os: windows2012 
