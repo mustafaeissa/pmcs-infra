@@ -1,8 +1,26 @@
+{% set avsets_name = [] %}
+{% for set in avsets %}
+  resource "azurerm_availability_set" "{{ set.name }}avset" {
+    name                         = "{{ set.name }}avset"
+    location                     = "{{ global.location }}"
+    resource_group_name   = "${azurerm_resource_group.{{ set.resource_group }}.name}"
+    platform_fault_domain_count  = 2
+    platform_update_domain_count = 2
+    managed                      = true
+}
+  {{ avsets_name.append(set.name) if avsets_name.append(set.name) }}
+{% endfor %}
+
 {% for vm in vmlist %}
   resource "azurerm_virtual_machine" "{{ vm.name }}" {
     name                  = "{{ vm.name }}"
     location              = "${azurerm_resource_group.{{ vm.resource_group_name }}.location}"
     resource_group_name   = "${azurerm_resource_group.{{ vm.resource_group_name }}.name}"
+    
+    {% if vm.avset in avsets_name %}
+      availability_set_id = "${azurerm_availability_set.{{ vm.avset }}avset.id}"
+    {% endif %}    
+    
     network_interface_ids = ["${azurerm_network_interface.{{ vm.name }}-nic1.id}"]
     vm_size               = "{{ vm.vm_size }}"
   
