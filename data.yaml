@@ -452,7 +452,7 @@ vmlist:
     data_disks:
       - size: 64
       
-  - name: signature-homolog
+  - name: sign-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
     os: windows2012
@@ -463,7 +463,7 @@ vmlist:
   - name: ypcfront-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4s_v3"
-    private_ip_address: "172.16.50.21"
+    private_ip_address: "172.16.50.29"
     data_disks:
       - size: 512
         
@@ -471,7 +471,7 @@ vmlist:
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
     os_disk_managed_disk_type: "StandardSSD_LRS"
-    private_ip_address: "172.16.50.22"
+    private_ip_address: "172.16.50.21"
     data_disks:
       - size: 1024
         storage_account_type: "StandardSSD_LRS"
@@ -479,16 +479,16 @@ vmlist:
   - name: mapping-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
-    private_ip_address: "172.16.50.23"
+    private_ip_address: "172.16.50.22"
     data_disks:
       - size: 512
        
-  - name: digitech-homolog
+  - name: digi-homolog
     resource_group_name: cif-conv-homolog
     vm_size: "Standard_D4_v3"
     os_disk_managed_disk_type: "StandardSSD_LRS"
     os: windows2012
-    private_ip_address: "172.16.50.24"
+    private_ip_address: "172.16.50.23"
     data_disks:
       - size: 512
         storage_account_type: "StandardSSD_LRS"
